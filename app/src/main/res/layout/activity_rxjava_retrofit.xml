@@ -9,22 +9,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical">
 
-    <Button
+    <TextView
         android:id="@+id/btn_rxjava"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:text="RxJava" />
+        android:layout_gravity="center_horizontal"
+        android:text="Retorfit" />
+
     <Button
-        android:id="@+id/btn_retrofit"
+        android:id="@+id/btn_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:text="Retrofit" />
-    <Button
-        android:id="@+id/btn_rxjava_retrofit"
+        android:text="text"
+        />
+    <TextView
+        android:id="@+id/tv_content"
         android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="RxjavaRetrofit" />
+        />
 </LinearLayout>

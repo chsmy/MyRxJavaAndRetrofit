@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".rxjava.RxJavaActivity"/>
         <activity android:name=".retrofit.RetrofitActivity"/>
+        <activity android:name=".rxjavaretrofit.RxJavaRetrofitActivity"/>
     </application>
 
 </manifest>
