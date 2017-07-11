@@ -43,13 +43,15 @@
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="依次列出"/>
+        android:textAllCaps="false"
+        android:text="flatMap"/>
     <Button
         android:id="@+id/btn_5"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="筛选"/>
+        android:textAllCaps="false"
+        android:text="concatMap"/>
     <Button
         android:id="@+id/btn_6"
         android:layout_marginTop="20dp"

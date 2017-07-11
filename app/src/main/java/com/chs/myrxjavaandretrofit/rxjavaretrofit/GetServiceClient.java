@@ -1,20 +1,14 @@
 package com.chs.myrxjavaandretrofit.rxjavaretrofit;
 
 import com.chs.myrxjavaandretrofit.bean.DouBanEntity;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.util.List;
+import org.reactivestreams.Subscriber;
+
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * 作者：chs on 2016/4/19 14:15
@@ -35,8 +29,8 @@ public class GetServiceClient {
 
         retrofit = new Retrofit.Builder()
                 .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
 
@@ -66,9 +60,9 @@ public class GetServiceClient {
         toSubscribe(observable, subscriber);
     }
     private <T> void toSubscribe(Observable<T> o, Subscriber<T> s){
-        o.subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s);
+//        o.subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(s);
     }
 }

@@ -7,9 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chs.myrxjavaandretrofit.R;
-import com.chs.myrxjavaandretrofit.bean.DouBanEntity;
-
-import rx.Subscriber;
 
 /**
  * 作者：chs on 2016/4/19 14:32
@@ -35,22 +32,22 @@ public class RxJavaRetrofitActivity extends Activity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_1:
-                GetServiceClient.getInstance().getTopMovie(new Subscriber<DouBanEntity>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(DouBanEntity douBanEntity) {
-                        tv_content.setText(douBanEntity.getTitle()+"      "+douBanEntity.getSubjects().get(0).getImages().getLarge());
-                    }
-                },0,5);
+//                GetServiceClient.getInstance().getTopMovie(new Subscriber<DouBanEntity>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(DouBanEntity douBanEntity) {
+//                        tv_content.setText(douBanEntity.getTitle()+"      "+douBanEntity.getSubjects().get(0).getImages().getLarge());
+//                    }
+//                },0,5);
                 break;
         }
     }

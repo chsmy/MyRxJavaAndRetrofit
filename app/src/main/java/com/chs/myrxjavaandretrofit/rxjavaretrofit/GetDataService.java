@@ -2,9 +2,9 @@ package com.chs.myrxjavaandretrofit.rxjavaretrofit;
 
 import com.chs.myrxjavaandretrofit.bean.DouBanEntity;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * 作者：chs on 2016/4/19 14:12

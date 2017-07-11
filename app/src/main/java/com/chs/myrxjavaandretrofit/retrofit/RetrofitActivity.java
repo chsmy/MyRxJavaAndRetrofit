@@ -13,8 +13,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 作者：chs on 2016/3/31 15:15
@@ -42,8 +40,8 @@ public class RetrofitActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_1:
                 Retrofit retrofit = new Retrofit.Builder()
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                        .addConverterFactory(GsonConverterFactory.create())
+//                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                         .baseUrl("https://api.douban.com/v2/movie/")
                         .build();
                 GetService service = retrofit.create(GetService.class);
