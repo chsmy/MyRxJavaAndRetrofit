@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:text="andorid io线程"/>
+        android:text="Concat"/>
     <ImageView
         android:id="@+id/iv_img"
         android:layout_width="wrap_content"
