@@ -2,13 +2,16 @@ package com.chs.myrxjavaandretrofit.rxjavaretrofit;
 
 import com.chs.myrxjavaandretrofit.bean.DouBanEntity;
 
-import org.reactivestreams.Subscriber;
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 作者：chs on 2016/4/19 14:15
@@ -29,8 +32,8 @@ public class GetServiceClient {
 
         retrofit = new Retrofit.Builder()
                 .client(builder.build())
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())//设置解析器
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//跟rxjaba关联
                 .baseUrl(BASE_URL)
                 .build();
 
@@ -46,23 +49,16 @@ public class GetServiceClient {
     public static GetServiceClient getInstance(){
         return SingletonHolder.INSTANCE;
     }
-    public void getTopMovie(Subscriber<DouBanEntity> subscriber, int start, int count){
+    public void getTopMovie(Observer<DouBanEntity> observer, int start, int count){
 
-//        movieService.getTopMovie(start, count)
-//                .map(new HttpResultFunc<List<Subject>>())
-//                .subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
+        Observable<DouBanEntity> observable = getDataService.getDouBanData(start, count);
 
-        Observable observable = getDataService.getDouBanData(start, count);
-
-        toSubscribe(observable, subscriber);
+        toSubscribe(observable, observer);
     }
-    private <T> void toSubscribe(Observable<T> o, Subscriber<T> s){
-//        o.subscribeOn(Schedulers.io())
-//                .unsubscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(s);
+    private <T> void toSubscribe(Observable<T> o, Observer<T> observer){
+                o.subscribeOn(Schedulers.io())//指定Observable
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//指定observer
+                .subscribe(observer);
     }
 }

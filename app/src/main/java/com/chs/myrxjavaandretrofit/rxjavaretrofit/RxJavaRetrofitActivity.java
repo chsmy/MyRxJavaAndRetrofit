@@ -2,11 +2,16 @@ package com.chs.myrxjavaandretrofit.rxjavaretrofit;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.chs.myrxjavaandretrofit.R;
+import com.chs.myrxjavaandretrofit.bean.DouBanEntity;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * 作者：chs on 2016/4/19 14:32
@@ -32,22 +37,27 @@ public class RxJavaRetrofitActivity extends Activity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_1:
-//                GetServiceClient.getInstance().getTopMovie(new Subscriber<DouBanEntity>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(DouBanEntity douBanEntity) {
-//                        tv_content.setText(douBanEntity.getTitle()+"      "+douBanEntity.getSubjects().get(0).getImages().getLarge());
-//                    }
-//                },0,5);
+                GetServiceClient.getInstance().getTopMovie(new Observer<DouBanEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+                    @Override
+                    public void onNext(DouBanEntity value) {
+                        tv_content.setText(value.getTitle()+"\n"+value.getSubjects().get(0).getImages().getLarge());
+                        Log.i("TAG",value.getTitle()+"\n"+value.getSubjects().get(0).getImages().getLarge());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                    @Override
+                    public void onComplete() {
+
+                    }
+                },0,5);
+
                 break;
         }
     }
