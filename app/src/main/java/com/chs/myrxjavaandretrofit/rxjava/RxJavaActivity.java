@@ -12,10 +12,17 @@ import android.widget.ImageView;
 
 import com.chs.myrxjavaandretrofit.R;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -34,7 +41,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class RxJavaActivity extends Activity implements View.OnClickListener {
     private String TAG = "";
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9;
     private String[] arrs = new String[]{"天空", "大海", "森林", "高山"};
     private ImageView iv_img;
 
@@ -56,6 +63,7 @@ public class RxJavaActivity extends Activity implements View.OnClickListener {
         btn_6.setOnClickListener(this);
         btn_7.setOnClickListener(this);
         btn_8.setOnClickListener(this);
+        btn_9.setOnClickListener(this);
     }
 
     private void initView() {
@@ -67,6 +75,7 @@ public class RxJavaActivity extends Activity implements View.OnClickListener {
         btn_6 = (Button) findViewById(R.id.btn_6);
         btn_7 = (Button) findViewById(R.id.btn_7);
         btn_8 = (Button) findViewById(R.id.btn_8);
+        btn_9 = (Button) findViewById(R.id.btn_9);
         iv_img = (ImageView) findViewById(R.id.iv_img);
     }
 
@@ -217,28 +226,28 @@ public class RxJavaActivity extends Activity implements View.OnClickListener {
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Log.i(TAG, "subscribeOn:"+Thread.currentThread().getName());
+                                Log.i(TAG, "subscribeOn:" + Thread.currentThread().getName());
                             }
                         })
                         .subscribeOn(AndroidSchedulers.mainThread())
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Log.i(TAG, "subscribeOn:"+Thread.currentThread().getName());
+                                Log.i(TAG, "subscribeOn:" + Thread.currentThread().getName());
                             }
                         })
                         .observeOn(Schedulers.io())
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Log.i(TAG, "observeOn:"+Thread.currentThread().getName());
+                                Log.i(TAG, "observeOn:" + Thread.currentThread().getName());
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnNext(new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
-                                Log.i(TAG, "observeOn:"+Thread.currentThread().getName());
+                                Log.i(TAG, "observeOn:" + Thread.currentThread().getName());
                             }
                         }).subscribe(new Consumer<String>() {
                     @Override
@@ -246,6 +255,80 @@ public class RxJavaActivity extends Activity implements View.OnClickListener {
                         Log.i(TAG, Thread.currentThread().getName());
                     }
                 });
+                break;
+            case R.id.btn_9:
+//              Observable.create(new ObservableOnSubscribe<String>() {
+//                    @Override
+//                    public void subscribe(ObservableEmitter<String> e) throws Exception {
+//                        for (int i = 0;; i++) {
+//                            Log.i(TAG, "发送："+i);
+//                            e.onNext("hello"+i);
+//                        }
+//                    }
+//                })
+//                      .observeOn(Schedulers.newThread())
+//                      .subscribe(new Observer<String>() {
+//                  @Override
+//                  public void onSubscribe(Disposable d) {
+//
+//                  }
+//
+//                  @Override
+//                  public void onNext(String value) {
+//                      try {
+//                          Thread.sleep(1000);
+//                      } catch (InterruptedException e) {
+//                          e.printStackTrace();
+//                      }
+//                      Log.i(TAG, "接收："+value);
+//                  }
+//
+//                  @Override
+//                  public void onError(Throwable e) {
+//
+//                  }
+//
+//                  @Override
+//                  public void onComplete() {
+//                      Log.i(TAG, "onComplete");
+//                  }
+//              });
+
+                Flowable.create(new FlowableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(FlowableEmitter<String> e) throws Exception {
+                        for (int i = 0; i < 1000; i++) {
+                            if(e.requested()>=0){
+                                Log.i("TAG", "emit " + i+"  requested:"+e.requested());
+                                e.onNext("hello" + i);
+                            }
+                        }
+                    }
+                }, BackpressureStrategy.BUFFER)
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Subscriber<String>() {
+                            @Override
+                            public void onSubscribe(Subscription s) {
+                                Log.i(TAG, "onSubscribe");
+                                s.request(300);
+                            }
+
+                            @Override
+                            public void onNext(String s) {
+                                Log.i("TAG", "onNext: " + s);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                Log.w("TAG", "onError: ", t);
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+
                 break;
         }
     }
