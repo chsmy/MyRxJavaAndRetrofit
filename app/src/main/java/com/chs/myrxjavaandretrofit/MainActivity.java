@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.chs.myrxjavaandretrofit.http.RxRetrofit;
+import com.chs.myrxjavaandretrofit.http.observer.BaseObserver;
 import com.chs.myrxjavaandretrofit.retrofit.RetrofitActivity;
 import com.chs.myrxjavaandretrofit.rxjava.RxJavaActivity;
 import com.chs.myrxjavaandretrofit.rxjavaretrofit.RxJavaRetrofitActivity;
@@ -19,9 +21,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
         initEvent();
-        RxRetrofit.get("/v2/movie/top250")
+//        RxRetrofit.get("/v2/movie/top250")
+//                .parama("count","10")
+//                .execute(new BaseObserver() {
+//                    @Override
+//                    public void onSuccess(Object result) {
+//                        LogUtils.i(result);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable e, String errorMsg) {
+//
+//                    }
+//                });
+        RxRetrofit.post("/v2/movie/top250")
                 .parama("count","10")
-                .execute();
+                .execute(new BaseObserver() {
+                    @Override
+                    public void onSuccess(Object result) {
+                        LogUtils.i(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String errorMsg) {
+
+                    }
+                });
     }
 
     private void initView() {

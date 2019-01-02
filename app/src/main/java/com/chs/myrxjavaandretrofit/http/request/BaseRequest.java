@@ -1,7 +1,5 @@
 package com.chs.myrxjavaandretrofit.http.request;
 
-import android.util.Log;
-
 import com.chs.myrxjavaandretrofit.http.ApiService;
 import com.chs.myrxjavaandretrofit.http.HttpMethod;
 import com.chs.myrxjavaandretrofit.http.RxRetrofitor;
@@ -12,7 +10,6 @@ import java.util.WeakHashMap;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -57,7 +54,7 @@ public abstract class BaseRequest {
         return this;
     }
 
-    public void execute(){
+    public void execute(Observer observer){
         final ApiService service = RxRetrofitor.getRestService();
         Observable observable = null;
         switch (getMethod()){
@@ -89,32 +86,12 @@ public abstract class BaseRequest {
             default:
                 break;
         }
-        toSubscribe(observable);
+        toSubscribe(observable,observer);
     }
-    private <T> void toSubscribe(Observable<T> o){
+    private <T> void toSubscribe(Observable<T> o,Observer<T> observer){
         o.subscribeOn(Schedulers.io())//指定Observable
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//指定observer
-                .subscribe(new Observer<T>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(T t) {
-                        Log.i("onNext",t.toString());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i("onError",e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("onComplete","onComplete");
-                    }
-                });
+                .subscribe(observer);
     }
 }
